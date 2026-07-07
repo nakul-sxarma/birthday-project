@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The July 9th Journey</title>
+    <meta name="description"
+        content="An interactive, multi-phase birthday journey full of memories, surprises, and interactive elements.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Ambient Background Glows -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <main class="app-container">
+
+        <!-- PHASE 1: The Gatekeeper -->
+        <section id="phase1" class="phase-section active">
+            <!-- Countdown Container -->
+            <div id="countdown-card" class="glass-card fade-in">
+                <h1 class="main-title" id="bypass-title-trigger">It's your Birthday my Soul</h1>
+                    <p class="subtitle">I want to be the first wish of your day, Begin my love</p>
+
+                    <div class="timer-display">
+                        <div class="time-block">
+                            <span id="days" class="time-number">00</span>
+                            <span class="time-label">Days</span>
+                        </div>
+                        <div class="time-block">
+                            <span id="hours" class="time-number">00</span>
+                            <span class="time-label">Hours</span>
+                        </div>
+                        <div class="time-block">
+                            <span id="minutes" class="time-number">00</span>
+                            <span class="time-label">Mins</span>
+                        </div>
+                        <div class="time-block">
+                            <span id="seconds" class="time-number">00</span>
+                            <span class="time-label">Secs</span>
+                        </div>
+                    </div>
+
+                    <p class="timer-footer">You belongs to me only Laado</p>
+            </div>
+
+            <!-- Hidden Quiz Container -->
+            <div id="quiz-card" class="glass-card hidden">
+                <h2 class="section-title">Quiz of my Love</h2>
+                <p class="subtitle">Let's see what kinda bond is this🫶😉.</p>
+
+                <!-- Quiz Progress Bar -->
+                <div class="quiz-progress-container">
+                    <div class="quiz-progress-bar" id="quiz-progress"></div>
+                </div>
+
+                <div id="quiz-question-container" class="question-container">
+                    <!-- Questions will be injected dynamically via JS -->
+                    <div class="question-text" id="question-text">Loading question...</div>
+                    <div class="options-grid" id="options-grid">
+                        <!-- Options injected dynamically -->
+                    </div>
+                </div>
+
+                <div class="quiz-footer">
+                    <span id="question-number">Question 1 of 3</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHASE 2: The Journey (Memory Timeline) -->
+        <section id="phase2" class="phase-section hidden">
+            <div class="timeline-header">
+                <h2 class="section-title">Happiest Birthday Laado, with a lots of love</h2>
+                <p class="subtitle">Let my feelings to be expressed</p>
+            </div>
+
+            <div class="timeline-container" id="timeline-container">
+                <!-- Timeline items will be injected here -->
+            </div>
+        </section>
+
+        <!-- PHASE 3: The Grand Finale (Scratch-Off & Compliment Engine) -->
+        <section id="phase3" class="phase-section hidden">
+            <div class="finale-header">
+                <h2 class="section-title">Yours Obediently 😁</h2>
+                <p class="subtitle">Feel it in my voice.</p>
+            </div>
+
+            <!-- Scratch-off Card Container -->
+            <div id="scratch-card-container" class="glass-card scratch-card-wrapper fade-in">
+                <h3 class="card-subtitle">Scratch in the way you want to scratch my back😙</h3>
+                <div class="canvas-relative-container">
+                    <!-- Secret message under the scratch layer -->
+                    <div id="secret-message" class="secret-message-content">
+                        <!-- Secret message content goes here -->
+                        <h3>Happy Birthday! 🎉</h3>
+                        <p>Loading your special message...</p>
+                    </div>
+                    <!-- Scratch Canvas -->
+                    <canvas id="scratch-canvas" width="320" height="200"></canvas>
+                </div>
+                <p class="scratch-hint">Click & drag or swipe to scratch off</p>
+            </div>
+
+            <!-- Compliment Engine Container -->
+            <div id="compliment-card" class="glass-card compliment-wrapper fade-in">
+                <h3 class="card-subtitle">Need a Smile?</h3>
+                <div class="compliment-display-box">
+                    <p id="compliment-text" class="typewriter-text">Click the button below to know about Meri Laado...
+                    </p>
+                </div>
+                <button id="generate-compliment-btn" class="primary-btn">
+                    <span class="btn-text">Mujhe dabao aur jaan jao</span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Subtle Dev Bypass Trigger (Bottom right corner) -->
+    <button id="dev-bypass-btn" class="dev-bypass" title="Bypass Countdown (Dev Only)">
+        <i class="fa-solid fa-key"></i>
+    </button>
+
+    <!-- JS Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>

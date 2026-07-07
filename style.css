@@ -1,0 +1,733 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --bg-dark: #0a0a0f;
+    --bg-dark-accent: #12121e;
+    --primary: #9d4edd;
+    --primary-glow: rgba(157, 78, 221, 0.4);
+    --secondary: #e0aaff;
+    --accent: #ff7096;
+    --accent-glow: rgba(255, 112, 150, 0.4);
+    --success: #38b000;
+    --error: #d90429;
+    
+    /* Text Colors */
+    --text-main: #f3f3f7;
+    --text-muted: #a0a0ba;
+    
+    /* Glassmorphism */
+    --glass-bg: rgba(20, 20, 35, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-focus: rgba(157, 78, 221, 0.3);
+    --glass-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.5);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   BASE & RESET
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================================================================
+   AMBIENT GLOW EFFECTS
+   ========================================================================== */
+.ambient-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.glow-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--primary) 0%, rgba(0,0,0,0) 70%);
+    top: -100px;
+    left: -100px;
+    animation: floatGlow 15s infinite alternate ease-in-out;
+}
+
+.glow-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--accent) 0%, rgba(0,0,0,0) 70%);
+    bottom: -150px;
+    right: -150px;
+    animation: floatGlow 20s infinite alternate-reverse ease-in-out;
+}
+
+.glow-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--secondary) 0%, rgba(0,0,0,0) 70%);
+    top: 40%;
+    left: 60%;
+    opacity: 0.3;
+}
+
+@keyframes floatGlow {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(50px, 80px) scale(1.15); }
+}
+
+/* ==========================================================================
+   CONTAINER & LAYOUT
+   ========================================================================== */
+.app-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 24px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.phase-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.phase-section.hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.phase-section.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   GLASS CARD STYLING
+   ========================================================================== */
+.glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 24px;
+    padding: 48px 32px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: var(--glass-shadow);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.glass-card:hover {
+    border-color: var(--glass-border-focus);
+    box-shadow: 0 20px 48px 0 rgba(157, 78, 221, 0.15);
+}
+
+/* Typography & Titles */
+.main-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ffffff 40%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    cursor: default;
+    user-select: none;
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-main);
+}
+
+.subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    font-weight: 400;
+}
+
+/* ==========================================================================
+   PHASE 1: COUNTDOWN TIMER
+   ========================================================================== */
+.timer-display {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 40px 0;
+}
+
+.time-block {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 16px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.time-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.time-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1;
+    background: linear-gradient(180deg, #ffffff 50%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(224, 170, 255, 0.2);
+}
+
+.time-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.timer-footer {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   PHASE 1: QUIZ SECTION
+   ========================================================================== */
+.quiz-progress-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-bottom: 32px;
+    overflow: hidden;
+}
+
+.quiz-progress-bar {
+    height: 100%;
+    width: 33.33%;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--primary-glow);
+    transition: width var(--transition-smooth);
+}
+
+.question-container {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.question-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    padding: 16px 20px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.option-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--secondary);
+    padding-left: 24px;
+}
+
+.option-btn:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.25);
+}
+
+.option-btn.correct {
+    background: rgba(56, 176, 0, 0.15);
+    border-color: var(--success);
+    color: #e2ffd9;
+    box-shadow: 0 0 15px rgba(56, 176, 0, 0.2);
+}
+
+.option-btn.wrong {
+    background: rgba(217, 4, 41, 0.15);
+    border-color: var(--error);
+    color: #ffd8dd;
+    box-shadow: 0 0 15px rgba(217, 4, 41, 0.2);
+    animation: shake 0.4s ease-in-out;
+}
+
+.quiz-footer {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 16px;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+/* ==========================================================================
+   PHASE 2: TIMELINE
+   ========================================================================== */
+.timeline-header {
+    margin-top: 40px;
+    margin-bottom: 48px;
+    text-align: center;
+}
+
+.timeline-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+/* Center timeline track line */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary) 0%, var(--accent) 50%, var(--secondary) 100%);
+    transform: translateX(-50%);
+    opacity: 0.3;
+}
+
+.timeline-item {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50%;
+    position: relative;
+    margin-bottom: 80px;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.timeline-item:nth-child(even) {
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: 50%;
+    transform: translateX(50px);
+}
+
+.timeline-item.in-view {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Timeline dot/node */
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 25px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--bg-dark);
+    border: 3px solid var(--primary);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--primary-glow);
+    z-index: 5;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.timeline-item:nth-child(even) .timeline-dot {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.timeline-item.in-view .timeline-dot {
+    transform: translate(-50%, -50%) scale(1.3);
+}
+
+/* Polaroid Card Style */
+.polaroid-card {
+    background: #ffffff;
+    padding: 16px 16px 24px 16px;
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    max-width: 320px;
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    color: #222222;
+    transform: rotate(-2deg);
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.timeline-item:nth-child(even) .polaroid-card {
+    transform: rotate(3deg);
+}
+
+.timeline-item:hover .polaroid-card {
+    transform: scale(1.05) rotate(0deg);
+    box-shadow: 0 20px 45px rgba(157, 78, 221, 0.3);
+}
+
+.polaroid-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #e9e9e9;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #dddddd;
+    margin-bottom: 16px;
+}
+
+.polaroid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.polaroid-caption {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.4;
+    color: #333333;
+}
+
+.polaroid-date {
+    display: block;
+    font-size: 0.75rem;
+    color: #777777;
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   PHASE 3: GRAND FINALE
+   ========================================================================== */
+.finale-header {
+    margin-top: 80px;
+    margin-bottom: 48px;
+    text-align: center;
+}
+
+.scratch-card-wrapper {
+    margin-bottom: 40px;
+}
+
+.canvas-relative-container {
+    position: relative;
+    width: 320px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.secret-message-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark-accent);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    z-index: 1;
+    text-align: center;
+}
+
+.secret-message-content h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    color: var(--accent);
+}
+
+.secret-message-content p {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+#scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    cursor: crosshair;
+    touch-action: none; /* Prevents scrolling while scratching on mobile */
+    transition: opacity 0.8s ease;
+}
+
+#scratch-canvas.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scratch-hint {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Compliment Engine */
+.compliment-wrapper {
+    margin-bottom: 60px;
+}
+
+.compliment-display-box {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.typewriter-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--secondary);
+    letter-spacing: 0.2px;
+}
+
+/* Primary Interactive Button */
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border: none;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 16px 32px;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--primary-glow);
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--primary-glow), 0 0 10px var(--accent-glow);
+}
+
+.primary-btn:active {
+    transform: translateY(1px);
+}
+
+/* ==========================================================================
+   DEV BYPASS FLOATING KEY
+   ========================================================================== */
+.dev-bypass {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.3;
+    z-index: 100;
+    transition: all var(--transition-fast);
+}
+
+.dev-bypass:hover {
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent);
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   ANIMATIONS & TRANSITIONS
+   ========================================================================== */
+.fade-in {
+    animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .glass-card {
+        padding: 32px 20px;
+    }
+    
+    .timer-display {
+        gap: 8px;
+    }
+    
+    .time-block {
+        padding: 12px 4px;
+        border-radius: 12px;
+    }
+    
+    .time-number {
+        font-size: 2rem;
+    }
+    
+    .time-label {
+        font-size: 0.65rem;
+        letter-spacing: 1px;
+    }
+    
+    /* Timeline Mobile styling */
+    .timeline-container::before {
+        left: 20px;
+    }
+    
+    .timeline-item {
+        padding-right: 0;
+        padding-left: 40px;
+        justify-content: flex-start;
+        transform: translateX(30px) !important;
+        margin-bottom: 50px;
+    }
+    
+    .timeline-item:nth-child(even) {
+        padding-left: 40px;
+    }
+    
+    .timeline-dot {
+        left: 20px;
+    }
+    
+    .polaroid-card {
+        max-width: 100%;
+        margin-right: 0;
+    }
+}
