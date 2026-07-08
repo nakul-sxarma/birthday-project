@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillText('Scratch with love ✨', canvas.width / 2, canvas.height / 2);
 
         // Set up the secret message text dynamically
-        const secretMessageText = `To a very special person: May your day be filled with endless smiles, warmth, and the love you deserve. Thank you for being such an amazing part of my journey. Here's to making many more wonderful memories together! ✨`;
+        const secretMessageText = `Laado, you know that I love you. I love you in a way that I’m totally lost in you. Today is your birthday, and all I want is ki tu hmesha khush rhe. I never want to be the cause of any sadness for you. I just want you to celebrate today and live your day to the fullest! If you ever need anything, just tell me—I’m always here for you. Wish you the happiest birthday again, and I pray that you achieve everything you ever want. I might not always know the right words to express my feelings, but I know you can feel my love. I will always be by your side. Happy birthday, Laado! Love you, love you, love you... till infinity.`;
         elements.secretMessage.innerHTML = `
             <h3>Happy Birthday! 🎉</h3>
             <p>${secretMessageText}</p>
