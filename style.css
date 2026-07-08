@@ -510,8 +510,9 @@ body {
 
 .canvas-relative-container {
     position: relative;
-    width: 320px;
-    height: 200px;
+    width: 100%;
+    max-width: 480px;
+    height: 300px;
     margin: 0 auto;
     border-radius: 16px;
     overflow: hidden;
@@ -528,24 +529,47 @@ body {
     background: var(--bg-dark-accent);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 24px;
+    padding: 28px 24px;
     z-index: 1;
     text-align: center;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* Custom Scrollbar for Secret Message */
+.secret-message-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.secret-message-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.secret-message-content::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 3px;
+}
+
+.secret-message-content::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-light);
 }
 
 .secret-message-content h3 {
     font-family: 'Outfit', sans-serif;
     font-size: 1.4rem;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     color: var(--accent);
+    flex-shrink: 0;
 }
 
 .secret-message-content p {
     font-size: 0.95rem;
     color: var(--text-main);
-    line-height: 1.4;
+    line-height: 1.5;
+    margin: 0;
 }
 
 #scratch-canvas {
