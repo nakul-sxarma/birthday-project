@@ -2,9 +2,12 @@
  * July 9th Interactive Journey - Main Script
  */
 
+window.bgMusic = null;
+window.isMuted = false;
+
 document.addEventListener('DOMContentLoaded', () => {
     // State management
-    const appState = {
+    var appState = {
         currentPhase: 1, // 1: Gatekeeper, 2: Journey, 3: Finale
         targetDate: getNextJuly9th(),
         countdownInterval: null,
@@ -13,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // DOM Elements
-    const elements = {
+    var elements = {
         // Phase containers
         phase1: document.getElementById('phase1'),
         phase2: document.getElementById('phase2'),
@@ -46,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Placeholder Quiz data (to be updated at Pause Point 1)
-    let quizQuestions = [
+    var quizQuestions = [
         {
             question: "What is our favorite spot?",
             options: ["Auto", "Temple", "Heart of each other", "Bed😗"],
@@ -287,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        PHASE 2 & 3 IMPLEMENTATIONS
        ========================================================================== */
-    const timelineData = [
+    var timelineData = [
         {
             date: "",
             caption: "Your Eyes are the first attention seeker, they talks, steal hearts and even make me feel alive.",
@@ -552,20 +555,17 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        BACKGROUND MUSIC CONTROLLER
        ========================================================================== */
-    let bgMusic = null;
-    let isMuted = false;
-
     function initBackgroundMusic() {
-        bgMusic = new Audio('assets/song.mp3');
-        bgMusic.loop = true;
-        bgMusic.volume = 0.4; // 40% volume
+        window.bgMusic = new Audio('assets/song.mp3');
+        window.bgMusic.loop = true;
+        window.bgMusic.volume = 0.4; // 40% volume
 
         const musicToggle = document.getElementById('music-toggle');
         const musicIcon = musicToggle ? musicToggle.querySelector('i') : null;
 
         function playMusic() {
-            if (isMuted) return;
-            bgMusic.play().then(() => {
+            if (window.isMuted) return;
+            window.bgMusic.play().then(() => {
                 if (musicIcon) {
                     musicIcon.className = 'fa-solid fa-volume-high';
                 }
@@ -588,13 +588,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (musicToggle) {
             musicToggle.addEventListener('click', (e) => {
                 e.stopPropagation(); // Avoid triggering document level click listener
-                if (bgMusic.paused) {
-                    bgMusic.play();
-                    isMuted = false;
+                if (window.bgMusic.paused) {
+                    window.bgMusic.play();
+                    window.isMuted = false;
                     if (musicIcon) musicIcon.className = 'fa-solid fa-volume-high';
                 } else {
-                    bgMusic.pause();
-                    isMuted = true;
+                    window.bgMusic.pause();
+                    window.isMuted = true;
                     if (musicIcon) musicIcon.className = 'fa-solid fa-volume-xmark';
                 }
             });
