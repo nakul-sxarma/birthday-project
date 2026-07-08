@@ -20,6 +20,11 @@
 </head>
 
 <body>
+    <!-- Floating Music Toggle -->
+    <button id="music-toggle" class="music-toggle-btn" title="Toggle Music">
+        <i class="fa-solid fa-volume-high"></i>
+    </button>
+
     <!-- Ambient Background Glows -->
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
@@ -54,6 +59,12 @@
                     </div>
 
                     <p class="timer-footer">You belongs to me only Laado</p>
+
+                    <!-- Unlock Button (shown only when countdown finishes) -->
+                    <button id="unlock-journey-btn" class="primary-btn hidden" style="margin-top: 10px;">
+                        <span class="btn-text">The time has passed, it's your day Laado</span>
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </button>
             </div>
 
             <!-- Hidden Quiz Container -->

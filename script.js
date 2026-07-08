@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         seconds: document.getElementById('seconds'),
         bypassTitleTrigger: document.getElementById('bypass-title-trigger'),
         devBypassBtn: document.getElementById('dev-bypass-btn'),
+        unlockJourneyBtn: document.getElementById('unlock-journey-btn'),
 
         // Quiz
         quizCard: document.getElementById('quiz-card'),
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCountdown();
     setupEventListeners();
     initComplimentEngine();
+    initBackgroundMusic();
 
     /* ==========================================================================
        COUNTDOWN LOGIC
@@ -99,9 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const distance = appState.targetDate - now;
 
         if (distance < 0) {
-            // Countdown finished! Reveal quiz.
+            // Countdown finished! Show unlock button.
             clearInterval(appState.countdownInterval);
-            revealQuiz();
+            showUnlockButton();
             return;
         }
 
@@ -118,12 +120,40 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.seconds.textContent = String(seconds).padStart(2, '0');
     }
 
+    function showUnlockButton() {
+        // Freeze timer display to zero
+        elements.days.textContent = "00";
+        elements.hours.textContent = "00";
+        elements.minutes.textContent = "00";
+        elements.seconds.textContent = "00";
+
+        // Hide timer display and footer/subtitle to clear up space
+        const timerDisplay = elements.countdownCard.querySelector('.timer-display');
+        const subtitle = elements.countdownCard.querySelector('.subtitle');
+        const footer = elements.countdownCard.querySelector('.timer-footer');
+        
+        if (timerDisplay) timerDisplay.style.display = 'none';
+        if (subtitle) subtitle.style.display = 'none';
+        if (footer) footer.style.display = 'none';
+
+        // Show the unlock button
+        if (elements.unlockJourneyBtn) {
+            elements.unlockJourneyBtn.classList.remove('hidden');
+            elements.unlockJourneyBtn.classList.add('fade-in');
+        }
+    }
+
     /* ==========================================================================
        TRANSITIONS & BYPASS LOGIC
        ========================================================================== */
     function revealQuiz() {
         if (appState.countdownInterval) {
             clearInterval(appState.countdownInterval);
+        }
+
+        // Hide the developer bypass button once the countdown is bypassed or ends
+        if (elements.devBypassBtn) {
+            elements.devBypassBtn.classList.add('hidden');
         }
 
         // Remove fade-in animation to allow inline style opacity change to work
@@ -153,6 +183,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dev bypass via double click on main title
         if (elements.bypassTitleTrigger) {
             elements.bypassTitleTrigger.addEventListener('dblclick', () => {
+                revealQuiz();
+            });
+        }
+
+        // Unlock button click
+        if (elements.unlockJourneyBtn) {
+            elements.unlockJourneyBtn.addEventListener('click', () => {
                 revealQuiz();
             });
         }
@@ -510,5 +547,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         type();
+    }
+
+    /* ==========================================================================
+       BACKGROUND MUSIC CONTROLLER
+       ========================================================================== */
+    let bgMusic = null;
+    let isMuted = false;
+
+    function initBackgroundMusic() {
+        bgMusic = new Audio('assets/song.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.4; // 40% volume
+
+        const musicToggle = document.getElementById('music-toggle');
+        const musicIcon = musicToggle ? musicToggle.querySelector('i') : null;
+
+        function playMusic() {
+            if (isMuted) return;
+            bgMusic.play().then(() => {
+                if (musicIcon) {
+                    musicIcon.className = 'fa-solid fa-volume-high';
+                }
+                // Once music successfully starts, clean up document level interaction listeners
+                document.removeEventListener('click', playMusic);
+                document.removeEventListener('touchstart', playMusic);
+            }).catch(err => {
+                console.log("Autoplay blocked, waiting for user interaction.", err);
+            });
+        }
+
+        // Try to play immediately
+        playMusic();
+
+        // Autoplay fallback: start playing on first mouse click or touch gesture
+        document.addEventListener('click', playMusic);
+        document.addEventListener('touchstart', playMusic);
+
+        // Music toggle button handler
+        if (musicToggle) {
+            musicToggle.addEventListener('click', (e) => {
+                e.stopPropagation(); // Avoid triggering document level click listener
+                if (bgMusic.paused) {
+                    bgMusic.play();
+                    isMuted = false;
+                    if (musicIcon) musicIcon.className = 'fa-solid fa-volume-high';
+                } else {
+                    bgMusic.pause();
+                    isMuted = true;
+                    if (musicIcon) musicIcon.className = 'fa-solid fa-volume-xmark';
+                }
+            });
+        }
     }
 });

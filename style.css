@@ -731,3 +731,38 @@ body {
         margin-right: 0;
     }
 }
+
+/* ==========================================================================
+   MUSIC TOGGLE FLOATING BUTTON
+   ========================================================================== */
+.music-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all var(--transition-fast);
+}
+
+.music-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 112, 150, 0.3);
+}
+
+.music-toggle-btn i {
+    font-size: 1.1rem;
+}
+
